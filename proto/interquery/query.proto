@@ -42,4 +42,23 @@ message QueryQueryStateResponse {
   google.protobuf.Any response = 2 [(gogoproto.nullable) = true];
 }
 
+// QuerySpotPriceRequest defines the gRPC request structure for a SpotPrice
+// query.
+message QuerySpotPriceRequest {
+  uint64 pool_id = 1 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  string base_asset_denom = 2
+      [ (gogoproto.moretags) = "yaml:\"base_asset_denom\"" ];
+  string quote_asset_denom = 3
+      [ (gogoproto.moretags) = "yaml:\"quote_asset_denom\"" ];
+  reserved 4;
+  reserved "withSwapFee";
+}
+
+// QuerySpotPriceResponse defines the gRPC response structure for a SpotPrice
+// query.
+message QuerySpotPriceResponse {
+  // String of the Dec. Ex) 10.203uatom
+  string spot_price = 1 [ (gogoproto.moretags) = "yaml:\"spot_price\"" ];
+}
+
 // this line is used by starport scaffolding # 3

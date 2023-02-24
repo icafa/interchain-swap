@@ -14,16 +14,16 @@ var _ = strconv.Itoa(0)
 
 func CmdSendQueryOsmosisPrice() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-query-all-balances [channel-id] [address]",
+		Use:   "send-query-all-balances [channel-id] [pool-id] [base-asset-denom] [quote-asset-denom] [address]",
 		Short: "Query the balances of an account on the remote chain via ICQ",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			pageReq, err := client.ReadPageRequest(cmd.Flags())
+			poolId, err := strconv.Atoi(args[1])
 			if err != nil {
 				return err
 			}
@@ -31,8 +31,9 @@ func CmdSendQueryOsmosisPrice() *cobra.Command {
 			msg := types.NewMsgSendQueryOsmosisPrice(
 				clientCtx.GetFromAddress().String(),
 				args[0], // channel id
-				args[1], // address
-				pageReq,
+				uint64(poolId),
+				args[2],
+				args[3],
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err

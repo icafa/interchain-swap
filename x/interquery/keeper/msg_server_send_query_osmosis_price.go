@@ -6,7 +6,6 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	clienttypes "github.com/cosmos/ibc-go/v4/modules/core/02-client/types"
 	channeltypes "github.com/cosmos/ibc-go/v4/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v4/modules/core/24-host"
@@ -22,13 +21,14 @@ func (k msgServer) SendQueryOsmosisPrice(goCtx context.Context, msg *types.MsgSe
 		return nil, sdkerrors.Wrap(channeltypes.ErrChannelCapabilityNotFound, "module does not own channel capability")
 	}
 
-	q := banktypes.QueryAllBalancesRequest{
-		Address:    msg.Address,
-		Pagination: msg.Pagination,
+	q := types.QuerySpotPriceRequest{
+		PoolId:          msg.PoolId,
+		BaseAssetDenom:  msg.BaseAssetDenom,
+		QuoteAssetDenom: msg.QuoteAssetDenom,
 	}
 	reqs := []abcitypes.RequestQuery{
 		{
-			Path: "/cosmos.bank.v1beta1.Query/AllBalances",
+			Path: "/osmosis.gamm.v1beta1.Query/SpotPrice",
 			Data: k.cdc.MustMarshal(&q),
 		},
 	}

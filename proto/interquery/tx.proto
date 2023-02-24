@@ -19,8 +19,11 @@ service Msg {
 message MsgSendQueryOsmosisPrice {
   string creator = 1;
   string channel_id = 2;
-  string address = 3;
-  cosmos.base.query.v1beta1.PageRequest pagination = 4;
+  uint64 pool_id = 3 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  string base_asset_denom = 4
+      [ (gogoproto.moretags) = "yaml:\"base_asset_denom\"" ];
+  string quote_asset_denom = 5
+      [ (gogoproto.moretags) = "yaml:\"quote_asset_denom\"" ];
 }
 
 message MsgSendQueryOsmosisPriceResponse {

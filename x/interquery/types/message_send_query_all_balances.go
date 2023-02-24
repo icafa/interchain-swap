@@ -3,19 +3,19 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/cosmos/cosmos-sdk/types/query"
 )
 
 const TypeMsgSendQueryOsmosisPrice = "send_query_all_balances"
 
 var _ sdk.Msg = &MsgSendQueryOsmosisPrice{}
 
-func NewMsgSendQueryOsmosisPrice(creator, channelId string, addr string, page *query.PageRequest) *MsgSendQueryOsmosisPrice {
+func NewMsgSendQueryOsmosisPrice(creator string, channelId string, poolId uint64, baseAssetDenom, quoteAssetDenom string) *MsgSendQueryOsmosisPrice {
 	return &MsgSendQueryOsmosisPrice{
-		Creator:    creator,
-		ChannelId:  channelId,
-		Address:    addr,
-		Pagination: page,
+		Creator:         creator,
+		ChannelId:       channelId,
+		PoolId:          poolId,
+		BaseAssetDenom:  baseAssetDenom,
+		QuoteAssetDenom: quoteAssetDenom,
 	}
 }
 
