@@ -416,6 +416,7 @@ func New(
 		app.IBCKeeper.ChannelKeeper,
 		&app.IBCKeeper.PortKeeper,
 		scopedInterqueryKeeper,
+		app.ICAControllerKeeper,
 	)
 	interqueryModule := interquerymodule.NewAppModule(appCodec, app.InterqueryKeeper, app.AccountKeeper, app.BankKeeper)
 
