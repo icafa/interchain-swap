@@ -38,6 +38,21 @@ message SwapAmountInRoute {
 
 message MsgSendOsmosisSwap {
   string sender = 1 [ (gogoproto.moretags) = "yaml:\"sender\"" ];
+  string connection_id = 2;
+  repeated SwapAmountInRoute routes = 3 [ (gogoproto.nullable) = false ];
+  cosmos.base.v1beta1.Coin token_in = 4 [
+    (gogoproto.moretags) = "yaml:\"token_in\"",
+    (gogoproto.nullable) = false
+  ];
+  string token_out_min_amount = 5 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"token_out_min_amount\"",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message OsmosisMsgSwapExactAmountIn {
+  string sender = 1 [ (gogoproto.moretags) = "yaml:\"sender\"" ];
   repeated SwapAmountInRoute routes = 2 [ (gogoproto.nullable) = false ];
   cosmos.base.v1beta1.Coin token_in = 3 [
     (gogoproto.moretags) = "yaml:\"token_in\"",
