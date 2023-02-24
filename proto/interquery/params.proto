@@ -1,0 +1,12 @@
+syntax = "proto3";
+package junkai121.interchainswap.interquery;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/junkai121/interchain-swap/x/interquery/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}

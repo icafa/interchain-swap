@@ -1,0 +1,74 @@
+syntax = "proto3";
+package junkai121.interchainswap.interquery;
+
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/junkai121/interchain-swap/x/interquery/types";
+
+// Msg defines the Msg service.
+service Msg {
+  rpc SendQueryOsmosisPrice(MsgSendQueryOsmosisPrice) returns (MsgSendQueryOsmosisPriceResponse);
+  rpc SendOsmosisSwap(MsgSendOsmosisSwap) returns (MsgSendOsmosisSwapResponse);
+  rpc RegisterICA(MsgRegisterICA) returns (MsgRegisterICAResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgSendQueryOsmosisPrice {
+  string creator = 1;
+  string channel_id = 2;
+  string address = 3;
+  cosmos.base.query.v1beta1.PageRequest pagination = 4;
+}
+
+message MsgSendQueryOsmosisPriceResponse {
+  uint64 sequence = 1;
+}
+
+message SwapAmountInRoute {
+  uint64 pool_id = 1 [ (gogoproto.moretags) = "yaml:\"pool_id\"" ];
+  string token_out_denom = 2
+      [ (gogoproto.moretags) = "yaml:\"token_out_denom\"" ];
+}
+
+message MsgSendOsmosisSwap {
+  string sender = 1 [ (gogoproto.moretags) = "yaml:\"sender\"" ];
+  repeated SwapAmountInRoute routes = 2 [ (gogoproto.nullable) = false ];
+  cosmos.base.v1beta1.Coin token_in = 3 [
+    (gogoproto.moretags) = "yaml:\"token_in\"",
+    (gogoproto.nullable) = false
+  ];
+  string token_out_min_amount = 4 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"token_out_min_amount\"",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message MsgSendOsmosisSwapResponse {
+  string token_out_amount = 1 [
+    (gogoproto.customtype) = "github.com/cosmos/cosmos-sdk/types.Int",
+    (gogoproto.moretags) = "yaml:\"token_out_amount\"",
+    (gogoproto.nullable) = false
+  ];
+}
+
+message MsgRegisterICA {
+  // owner is the address of the interchain account owner.
+  string creator = 1;
+
+  // connection_id is the connection id string (i.e. channel-5).
+  string connection_id = 2;
+
+  // version is the application version string. For example, this could be an
+  // ICS27 encoded metadata type or an ICS29 encoded metadata type with a nested
+  // application version.
+  string version = 3;
+}
+
+message MsgRegisterICAResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
