@@ -21,7 +21,10 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require github.com/strangelove-ventures/async-icq v0.0.0-20230116084035-5609e84dd443
+require (
+	github.com/spf13/pflag v1.0.5
+	github.com/strangelove-ventures/async-icq v0.0.0-20230116084035-5609e84dd443
+)
 
 require (
 	filippo.io/edwards25519 v1.0.0-rc.1 // indirect
@@ -103,7 +106,6 @@ require (
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
 	github.com/spf13/afero v1.9.2 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.14.0 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/syndtr/goleveldb v1.0.1-0.20210819022825-2ae1ddf74ef7 // indirect

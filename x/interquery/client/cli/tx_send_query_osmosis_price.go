@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdSendQueryOsmosisPrice() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "send-query-all-balances [channel-id] [pool-id] [base-asset-denom] [quote-asset-denom] [address]",
+		Use:   "send-query-osmosis-price [channel-id] [pool-id] [base-asset-denom] [quote-asset-denom]",
 		Short: "Query the balances of an account on the remote chain via ICQ",
 		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {

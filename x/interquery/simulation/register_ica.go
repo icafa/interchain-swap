@@ -3,11 +3,11 @@ package simulation
 import (
 	"math/rand"
 
-	"github.com/junkai121/interchain-swap/x/interquery/keeper"
-	"github.com/junkai121/interchain-swap/x/interquery/types"
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	simtypes "github.com/cosmos/cosmos-sdk/types/simulation"
+	"github.com/junkai121/interchain-swap/x/interquery/keeper"
+	"github.com/junkai121/interchain-swap/x/interquery/types"
 )
 
 func SimulateMsgRegisterICA(

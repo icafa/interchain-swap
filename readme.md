@@ -1,13 +1,8 @@
 # Interchain swap
 
-## Disclaimer
-
-The following repository and [`x/interquery`](./x/interquery/) module serves as an example and is used to exercise the functionality of Interchain Accounts end-to-end for development purposes only.
-This module **SHOULD NOT** be used in production systems
-
 ## Overview
 
-The following repository contains a basic example of an Interchain Queries module and serves as a developer guide for teams that wish to use interchain queries functionality.
+This codebase is the minimal demo to test interchain query and ica txs with osmosis chain.
 
 ### Developer Documentation
 
@@ -19,17 +14,44 @@ https://link.medium.com/a70uOK1cFwb
 
 ## Demo
 
-### Start the two instances of demo chain with following commands
+### Start the instance of `interchain-swapd`
 
 ```bash
 ignite chain serve -c sender.yml --reset-once
 ```
 
+### Start the instance of osmosisd
+
 ```bash
-ignite chain serve -c receiver.yml --reset-once
+sh start_osmosisd.sh
 ```
 
-### Configure and start the relayer
+### Setup osmosis pool
+
+Create a new liquidity pool and provide initial liquidity to it.
+
+```sh
+osmosisd tx gamm create-pool --pool-file="./pool.json"
+```
+
+```json
+{
+  "weights": "5stake,5uosmo",
+  "initial-deposit": "100000000stake,1000000uosmo",
+  "swap-fee": "0.002",
+  "exit-fee": "0.0",
+  "future-governor": "168h"
+}
+```
+
+### Initialize connection and start hermes for ICA relayer
+
+```bash
+sh hermes_init.sh
+sh network/hermes/start.sh
+```
+
+### Configure and start the icq relayer
 
 ```bash
 rm -rf ~/.ignite/relayer
@@ -60,41 +82,39 @@ ignite relayer connect
 ### Send the query to "receiver" chain
 
 ```bash
-interchain-swapd tx interquery send-query-all-balances channel-0 cosmos1ez43ye5qn3q2zwh8uvswppvducwnkq6w6mthgl --chain-id=sender --node=tcp://localhost:26659 --home ~/.sender --from alice
+interchain-swapd tx interquery send-query-osmosis-price channel-0 cosmos1ez43ye5qn3q2zwh8uvswppvducwnkq6w6mthgl --chain-id=sender --node=tcp://localhost:26659 --home ~/.sender --from alice
 ```
-
-### See the result of packet 1
 
 ```bash
-interchain-swapd query interquery query-state 1 --chain-id=sender --node=tcp://localhost:26659
+interchain-swapd query interquery query-price-state 1 --chain-id=sender --node=tcp://localhost:26659
 ```
 
-Output:
+### Create interchain account
 
-```
-    request:
-    '@type': /cosmos.bank.v1beta1.QueryAllBalancesRequest
-    address: cosmos1ez43ye5qn3q2zwh8uvswppvducwnkq6w6mthgl
-    pagination:
-        count_total: false
-        key: null
-        limit: "100"
-        offset: "0"
-        reverse: false
-    response:
-    '@type': /cosmos.bank.v1beta1.QueryAllBalancesResponse
-    balances:
-    - amount: "8000000"
-        denom: atom
-    - amount: "800000000"
-        denom: stake
-    pagination:
-        next_key: null
-        total: "0"
+```bash
+interchain-swapd tx interquery register-ica channel-1 ""
 ```
 
-Relayer Output:
+### Query interchain account address
+
+```bash
+interchain-swapd query interquery query-ica [connection-id] [owner]
+```
+
+### Send tokens to interchain-account
 
 ```
-Relay 1 acks from receiver => sender
+osmosisd tx bank send bob $ICA_ADDRESS 10000000uosmo --keyring-backend=test
+```
+
+### Send ICA swap tx
+
+```bash
+interchain-swapd tx interquery swap-exact-amount-in [connection-id] [token-in] [token-out-min-amount] --pool-id --from --chain-id
+```
+
+Example
+
+```bash
+interchain-swapd tx interquery swap-exact-amount-in connection-0 100000stake 1400 --swap-route-pool-ids 1 --swap-route-denoms uosmo --from WALLET_NAME --chain-id osmosis-1
 ```

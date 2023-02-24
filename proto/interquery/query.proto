@@ -21,6 +21,11 @@ service Query {
 		option (google.api.http).get = "/interchain-swap/interchain-swap/interquery/query_state";
 	}
 
+// Queries a list of QueryIca items.
+	rpc QueryIca(QueryQueryIcaRequest) returns (QueryQueryIcaResponse) {
+		option (google.api.http).get = "/junkai121/interchain-swap/interquery/query_ica";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -59,6 +64,15 @@ message QuerySpotPriceRequest {
 message QuerySpotPriceResponse {
   // String of the Dec. Ex) 10.203uatom
   string spot_price = 1 [ (gogoproto.moretags) = "yaml:\"spot_price\"" ];
+}
+
+message QueryQueryIcaRequest {
+  string connection_id = 1;
+  string owner = 2;
+}
+
+message QueryQueryIcaResponse {
+  string interchain_account_address = 1;
 }
 
 // this line is used by starport scaffolding # 3

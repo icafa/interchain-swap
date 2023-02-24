@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -12,11 +11,11 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdQueryPriceState() *cobra.Command {
+func CmdQueryIca() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "query-price-state [sequence]",
-		Short: "Returns the request and response of an ICQ query given the packet sequence",
-		Args:  cobra.ExactArgs(1),
+		Use:   "query-ica [connection-id] [owner]",
+		Short: "Query queryIca",
+		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -26,15 +25,12 @@ func CmdQueryPriceState() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			sequence, err := strconv.ParseUint(args[0], 10, 64)
-			if err != nil {
-				return fmt.Errorf("invalid sequence: %w", err)
-			}
-			params := &types.QueryQueryStateRequest{
-				Sequence: sequence,
+			params := &types.QueryQueryIcaRequest{
+				ConnectionId: args[0],
+				Owner:        args[1],
 			}
 
-			res, err := queryClient.QueryState(cmd.Context(), params)
+			res, err := queryClient.QueryIca(cmd.Context(), params)
 			if err != nil {
 				return err
 			}

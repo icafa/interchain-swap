@@ -9,9 +9,11 @@ const TypeMsgRegisterICA = "register_ica"
 
 var _ sdk.Msg = &MsgRegisterICA{}
 
-func NewMsgRegisterICA(creator string, title string, body string) *MsgRegisterICA {
+func NewMsgRegisterICA(creator string, connectionId, version string) *MsgRegisterICA {
 	return &MsgRegisterICA{
-		Creator: creator,
+		Creator:      creator,
+		ConnectionId: connectionId,
+		Version:      version,
 	}
 }
 

@@ -9,12 +9,6 @@ const TypeMsgSendOsmosisSwap = "send_osmosis_swap"
 
 var _ sdk.Msg = &MsgSendOsmosisSwap{}
 
-func NewMsgSendOsmosisSwap(creator string, title string, body string) *MsgSendOsmosisSwap {
-	return &MsgSendOsmosisSwap{
-		Sender: creator,
-	}
-}
-
 func (msg *MsgSendOsmosisSwap) Route() string {
 	return RouterKey
 }
